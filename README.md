@@ -1,52 +1,58 @@
-# AI Blog Post Automation
+# AI Blog Automation System
 
-This project automates the process of generating and publishing daily AI blog posts using OpenAI's ChatGPT and WordPress integration.
+An automated system for generating and publishing AI-focused blog posts using Python, OpenAI's GPT, and WordPress integration. This system automatically fetches trending AI topics, generates engaging content, and publishes it to your WordPress site.
 
 ## Features
 
-- Fetches trending AI topics using Google News
-- Generates high-quality blog posts using ChatGPT
-- Allows for manual review and editing before publishing
-- Securely manages API keys and credentials
-- Publishes directly to WordPress
-- Includes comprehensive logging
+- 🤖 Automated content generation using OpenAI's GPT
+- 📊 Smart topic selection with keyword ranking system
+- 🔒 Secure credential management
+- 🌐 WordPress REST API integration
+- 📝 HTML-formatted blog posts
+- 🎯 Small business and entrepreneurship focus
 
 ## Prerequisites
 
-- Python 3.10 or higher
+- Python 3.10+
+- WordPress site with REST API enabled
 - OpenAI API key
-- WordPress site with XML-RPC enabled
 - WordPress application password
 
 ## Installation
 
-1. Clone this repository:
-   ```bash
-   git clone <repository-url>
-   cd trendingAIblogs
-   ```
+1. Clone the repository:
+```bash
+git clone [your-repo-url]
+cd trendingAIblogs
+```
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-4. Create `.env` file:
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` with your WordPress URL and username.
+4. Run the setup script to configure credentials:
+```bash
+python setup.py
+```
 
-5. Run the setup script to configure your credentials:
-   ```bash
-   python setup.py
-   ```
+## Configuration
+
+1. Create a `.env` file with your WordPress URL:
+```
+WORDPRESS_URL=https://your-site.com/
+WORDPRESS_USERNAME=your-username
+```
+
+2. Run setup.py to securely store:
+- OpenAI API key
+- WordPress application password
 
 ## Usage
 
@@ -57,45 +63,35 @@ python daily_ai_blog.py
 
 The script will:
 1. Fetch trending AI topics
-2. Generate a blog post
-3. Save it for your review
-4. Open it in your default text editor
-5. Wait for your confirmation
-6. Publish to WordPress
+2. Rank them based on relevance
+3. Generate a blog post
+4. Save it for review
+5. Publish to WordPress after approval
 
-## Automation
+## Topic Selection Algorithm
 
-### Windows
-Use Task Scheduler to run the script daily:
-1. Open Task Scheduler
-2. Create a new task
-3. Set the action to run your Python interpreter with the script
-4. Set your preferred schedule
+The system uses a sophisticated ranking algorithm that:
+- Awards points for relevant keywords (AI tools, developments, innovations)
+- Subtracts points for unwanted topics (financial, stock market)
+- Ranks all topics by score for optimal selection
 
-### Linux/macOS
-Add a cron job:
-```bash
-crontab -e
-```
-Add:
-```
-0 9 * * * /path/to/venv/bin/python /path/to/daily_ai_blog.py
-```
+## Content Generation
 
-## Logging
+The content generation is optimized for:
+- Small business audience
+- Practical AI applications
+- Cost-effective solutions
+- Clear calls-to-action
+- Professional yet approachable tone
 
-Logs are saved to `daily_ai_blog.log`. Check this file for execution details and any errors.
+## Customization Note
 
-## Security
+The current prompt includes a requirement for Sharia compliance as the original author is Muslim. Feel free to modify the prompt in `daily_ai_blog.py` to align with your own values and requirements. The key sections to customize are:
 
-- API keys and passwords are stored securely using the system's credential manager
-- Sensitive data is never stored in plain text
-- Basic content filtering is implemented
+1. Topic selection keywords in `rank_and_filter_topics()`
+2. Content generation prompt in `generate_blog_post()`
+3. HTML formatting templates
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
