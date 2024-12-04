@@ -84,13 +84,87 @@ The content generation is optimized for:
 - Clear calls-to-action
 - Professional yet approachable tone
 
-## Customization Note
+## Customization Guide
 
-The current prompt includes a requirement for Sharia compliance as the original author is Muslim. Feel free to modify the prompt in `daily_ai_blog.py` to align with your own values and requirements. The key sections to customize are:
+### Search Terms and Topic Selection
 
-1. Topic selection keywords in `rank_and_filter_topics()`
-2. Content generation prompt in `generate_blog_post()`
-3. HTML formatting templates
+The system uses carefully chosen search terms and ranking keywords to find relevant AI news. Here's how to customize them for your needs:
+
+#### Search Queries
+In `get_trending_ai_topics()`, modify the search queries based on your focus:
+```python
+search_queries = [
+    'new AI tool release',
+    'artificial intelligence development',
+    'AI research breakthrough',
+    'machine learning innovation',
+    'AI technology advancement'
+]
+```
+- These queries are designed to find news about new tools and developments rather than financial news
+- Add queries relevant to your industry or specific AI interests
+- Keep queries specific enough to get relevant results but broad enough to get sufficient content
+
+#### Keyword Ranking System
+In `rank_and_filter_topics()`, customize the keywords that determine article relevance:
+
+```python
+relevant_keywords = [
+    'tool', 'launch', 'release',      # New product announcements
+    'research', 'breakthrough',        # Technical developments
+    'innovation', 'platform',          # Industry advancement
+    'open source', 'model',           # AI model releases
+    'small business'                  # Target audience focus
+]
+
+exclude_keywords = [
+    'stock', 'market', 'invest',      # Financial news
+    'price', 'revenue', 'earnings'    # Market performance
+]
+```
+
+- Each relevant keyword match adds +1 to the topic's score
+- Each exclude keyword match subtracts -0.5 from the score
+- Adjust these weights in the code to make the filtering more or less strict
+
+### Content Generation Prompt
+
+The blog generation prompt in `generate_blog_post()` is crucial for producing content that matches your goals:
+
+```python
+prompt = (
+    "Write an engaging and informative blog post that:"
+    "1. Starts with a compelling title\n"
+    "2. Relates to practical business benefits\n"
+    "3. Breaks down complex AI concepts\n"
+    "4. Includes real-world examples\n"
+    "5. Highlights cost-effective solutions\n"
+)
+```
+
+#### Customization Areas:
+
+1. **Audience Focus**: Currently targets small business owners - modify for your target audience
+2. **Content Structure**: Adjust the HTML formatting for your WordPress theme
+3. **Tone and Style**: Change the professional yet approachable tone as needed
+4. **Call to Action**: Customize the ending to match your business goals
+5. **Ethical Guidelines**: Currently includes Sharia compliance - modify or remove based on your values
+
+### Example Customizations
+
+For a technical AI blog:
+```python
+relevant_keywords = ['algorithm', 'architecture', 'framework', 'implementation']
+prompt = "Write a technical deep-dive into the AI technology..."
+```
+
+For an AI education blog:
+```python
+relevant_keywords = ['learning', 'tutorial', 'guide', 'introduction']
+prompt = "Write a beginner-friendly explanation of the AI concept..."
+```
+
+Remember to test your customizations with a few sample runs to ensure the content meets your expectations.
 
 ## Contributing
 
