@@ -1,0 +1,13 @@
+# Environment and credentials
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated content
+blog_post_*.md
+
+# IDE files
+.vscode/
+.idea/
