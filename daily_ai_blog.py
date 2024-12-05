@@ -128,23 +128,47 @@ def select_topic(topics):
     
     return selected['topic']['title']
 
+def generate_title(topic):
+    """Generate an engaging title using OpenAI."""
+    title_prompt = (
+        f"Create a compelling, SEO-friendly blog title about '{topic}' that would appeal to small business owners "
+        "and entrepreneurs interested in AI solutions. The title should be concise, engaging, and professional. "
+        "Do not include any markdown formatting or special characters."
+    )
+    try:
+        client = openai.OpenAI(api_key=OPENAI_API_KEY)
+        response = client.chat.completions.create(
+            model='gpt-3.5-turbo',
+            messages=[{"role": "user", "content": title_prompt}],
+            max_tokens=50,
+            temperature=0.7
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logging.error(f"Error generating title: {str(e)}")
+        return None
+
 def generate_blog_post(topic):
     """Generate a blog post using OpenAI's ChatGPT model."""
+    # First generate the title
+    title = generate_title(topic)
+    if not title:
+        return None, None
+
     prompt = (
         f"Write an engaging and informative blog post about '{topic}' that demonstrates expertise in AI solutions "
         "while appealing to small business owners and entrepreneurs. "
         "The post should:\n"
-        "1. Start with a compelling title that includes the topic\n"
-        "2. Begin with a hook that relates the topic to practical business benefits\n"
-        "3. Break down complex AI concepts into simple, actionable insights\n"
-        "4. Include real-world applications and examples for small businesses\n"
-        "5. Highlight cost-effective ways to implement AI solutions\n"
-        "6. Address common concerns and misconceptions\n"
-        "7. End with a clear call-to-action for businesses seeking AI consultation\n\n"
+        "1. Begin with a hook that relates the topic to practical business benefits\n"
+        "2. Break down complex AI concepts into simple, actionable insights\n"
+        "3. Include real-world applications and examples for small businesses\n"
+        "4. Highlight cost-effective ways to implement AI solutions\n"
+        "5. Address common concerns and misconceptions\n"
+        "6. End with a clear call-to-action for businesses seeking AI consultation\n\n"
         "Format the post using proper HTML tags (<h2> for headings, <p> for paragraphs, <ul> or <ol> for lists). "
         "Make it morally and ethically sound, focusing on sustainable and responsible AI use. "
         "The tone should be professional yet approachable, positioning the author as a trusted AI solutions provider. "
-        "Aim for approximately 1000 words."
+        "Aim for approximately 1000 words. Do not include a title at the beginning of the post."
     )
     try:
         client = openai.OpenAI(api_key=OPENAI_API_KEY)
@@ -160,13 +184,14 @@ def generate_blog_post(topic):
         disallowed_keywords = ['disallowed content', 'violence', 'illegal']
         if any(word in content.lower() for word in disallowed_keywords):
             logging.warning("Generated content contains disallowed content.")
-            return None
+            return None, None
 
-        logging.info("Generated blog post successfully.")
-        return content
+        logging.info("Generated blog post successfully")
+        return title, content
+
     except Exception as e:
-        logging.error(f"Failed to generate blog post: {e}")
-        return None
+        logging.error(f"Error generating blog post: {str(e)}")
+        return None, None
 
 def save_for_review(title, content):
     """Save the blog post locally for review."""
@@ -297,13 +322,13 @@ def main():
         return
 
     # Step 3: Generate a blog post
-    blog_post = generate_blog_post(topic)
+    title, blog_post = generate_blog_post(topic)
     if not blog_post:
         logging.error("Failed to generate blog post. Exiting.")
         return
 
     # Step 4: Save for review
-    filename = save_for_review(topic, blog_post)
+    filename = save_for_review(title, blog_post)
     if not filename:
         logging.error("Failed to save blog post for review. Exiting.")
         return
@@ -320,7 +345,7 @@ def main():
         return
 
     # Step 7: Post to WordPress
-    post_to_wordpress(topic, edited_content)
+    post_to_wordpress(title, edited_content)
 
 if __name__ == '__main__':
     main()

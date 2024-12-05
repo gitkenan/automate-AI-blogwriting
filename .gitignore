@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+env/
 
 # Generated content
 blog_post_*.md

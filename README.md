@@ -28,31 +28,55 @@ cd trendingAIblogs
 
 2. Create a virtual environment:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Windows
+py -m venv env
+
+# Unix/MacOS
+python3 -m venv env
 ```
 
-3. Install dependencies:
+3. Activate the virtual environment:
+```bash
+# Windows
+.\env\Scripts\activate
+
+# Unix/MacOS
+source env/bin/activate
+```
+
+4. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run the setup script to configure credentials:
+5. Run the setup script to configure credentials:
 ```bash
 python setup.py
 ```
 
+## Quick Start
+
+The easiest way to run the blog generator is using the provided batch script:
+
+1. Double-click `run_blog.bat` (Windows)
+   - This will automatically activate the virtual environment
+   - Run the blog generator
+   - Show you the output
+   - Keep the window open until you press a key
+
+Alternatively, you can run manually:
+```bash
+python daily_ai_blog.py
+```
+
 ## Configuration
 
-1. Create a `.env` file with your WordPress URL:
+1. Create a `.env` file with your credentials:
 ```
 WORDPRESS_URL=https://your-site.com/
 WORDPRESS_USERNAME=your-username
+OPENAI_API_KEY=your-api-key
 ```
-
-2. Run setup.py to securely store:
-- OpenAI API key
-- WordPress application password
 
 ## Usage
 
